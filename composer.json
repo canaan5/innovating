@@ -1,0 +1,32 @@
+{
+    "name": "canaan5/innovating",
+    "description": "Innovating PHP Framework",
+    "keywords": ["framework", "Innovating"],
+    "type": "framework",
+    "license": "MIT",
+    "homepage": "http://canaan5.github.io/innovating/",
+    "authors": [
+        {
+            "name": "canaan5",
+            "email": "kestylove5@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.9",
+        "phpunit/phpunit": "5.2.*",
+        "illuminate/events": "5.2.*",
+        "illuminate/view": "5.2.*",
+        "illuminate/database": "5.2.*",
+        "container-interop/container-interop": "^1.1",
+        "canaan5/routing": "1.0.*",
+        "texthtml/whoops-pimple": "~1.0",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Innovating\\": "src/Innovating",
+            "app\\": "app"
+        }
+    }
+}
