@@ -19,8 +19,6 @@
         "illuminate/view": "5.2.*",
         "illuminate/database": "5.2.*",
         "container-interop/container-interop": "^1.1",
-        "canaan5/routing": "1.0.*",
-        "texthtml/whoops-pimple": "~1.0",
         "guzzlehttp/guzzle": "^6.2"
     },
     "autoload": {

@@ -143,9 +143,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this['appPath'] = $this->appPath();
 
         $this->register(new DefaultServices($this));
-
         $this->register(new ViewServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
+        // $this->
     }
 
     public function register($provider)
