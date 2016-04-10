@@ -189,8 +189,11 @@ class Router implements RouterContract
         if ( is_array($action) && sizeof($action) === 2 )
         {
             $this->container->instance('Innovating\Routing\Controller', $route);
-            $class = $this->container->make($this->controllerPath().$action[0]);
-            return call_user_func_array([$class, $action[1]], $route->getParameters());
+
+            return call_user_func_array([
+                $this->container->make($this->controllerPath().$action[0]),
+                $action[1]],
+                $route->getParameters());
         }
 
         return $route;

@@ -9,6 +9,7 @@
 namespace Innovating\ServiceProviders;
 
 
+use Illuminate\Database\Capsule\Manager;
 use Innovating\ServiceProvider;
 
 class DatabaseServiceprovider extends ServiceProvider
@@ -21,6 +22,20 @@ class DatabaseServiceprovider extends ServiceProvider
      */
     public function register()
     {
+        $manager = new Manager();
+
+        $manager->addConnection([
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => 'test',
+            'username'  => 'kesty',
+            'password'  => 'CanaaN55*',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ]);
+
+        $manager->setEventDispatcher($this->app['dispatcher']($this));
         
     }
 }

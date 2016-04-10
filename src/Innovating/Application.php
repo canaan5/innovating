@@ -11,6 +11,7 @@ namespace Innovating;
 use Illuminate\Http\Response;
 use Innovating\Contracts\ApplicationContract;
 use Innovating\DIC\Container;
+use Innovating\ServiceProviders\DatabaseServiceprovider;
 use Innovating\ServiceProviders\DefaultServices;
 use Innovating\ServiceProviders\RouteServiceProvider;
 use Innovating\ServiceProviders\ViewServiceProvider;
@@ -45,7 +46,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         Debug::enable();
         static::setInstance($this);
         $this->instance('app', $this);
-        $this->instance('Innovating\DIC\Container', $this);
 
         if ( ! is_null($basePath))
             $this->setBasePath($basePath);
@@ -127,8 +127,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
     {
-        $this->app->instance('request', $request);
-
         $response = $this->app->response->create($this->router->dispatch($request));
 
         $response->send();
@@ -145,13 +143,13 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->register(new DefaultServices($this));
         $this->register(new ViewServiceProvider($this));
         $this->register(new RouteServiceProvider($this));
-        // $this->
+        $this->register(new DatabaseServiceprovider($this));
     }
 
     public function register($provider)
     {
-        if ( $registered = $this->getProvider($provider) )
-            return $registered->register();
+        if ( $ServiceProvider = $this->getProvider($provider) )
+            return $ServiceProvider->register();
 
         $provider->register();
 

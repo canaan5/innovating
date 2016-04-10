@@ -39,12 +39,9 @@ class ViewServiceProvider extends ServiceProvider
          */
         $this->app['view'] = function($c) {
 
-            $viewPath = [$this->app->path . '/View'];
-            $compiledView = $this->app->basePath() . '/storage/view';
-
             $viewResolver = new EngineResolver();
 
-            $compiler = new BladeCompiler($c['filesystem'], $compiledView);
+            $compiler = new BladeCompiler($c['filesystem'], $this->app->basePath() . '/storage/view');
 
             $filesystem = $c['filesystem'];
 
@@ -57,7 +54,7 @@ class ViewServiceProvider extends ServiceProvider
                 return new PhpEngine();
             });
 
-            $viewFinder = new FileViewFinder($filesystem, $viewPath);
+            $viewFinder = new FileViewFinder($filesystem, [$this->app->path . '/View']);
             $viewFactory = new Factory($viewResolver, $viewFinder, new Dispatcher());
 
             return $viewFactory;

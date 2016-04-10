@@ -8,7 +8,6 @@
 
 namespace Innovating\ServiceProviders;
 
-
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Innovating\DIC\Container;
@@ -56,7 +55,7 @@ class DefaultServices extends ServiceProvider
          */
         $this->app['dispatcher'] = $this->app->share(function()
         {
-            return new Dispatcher();
+            return new Dispatcher($this->app->getContainer());
         });
 
         /**

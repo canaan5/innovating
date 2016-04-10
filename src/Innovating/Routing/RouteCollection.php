@@ -52,7 +52,7 @@ class RouteCollection implements RouteCollectionContract
      */
     public function getContainer()
     {
-        return (new Container())->getInstance();
+        return Container::getInstance();
     }
 
     /**
