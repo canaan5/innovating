@@ -133,7 +133,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Register Default Dependencies of the application
+     * Register Default Services of the application
      */
     public function registerDefaultServices()
     {
@@ -146,7 +146,8 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->register(new DatabaseServiceprovider($this));
     }
 
-    public function register($provider)
+    
+    public function register(ServiceProvider $provider)
     {
         if ( $ServiceProvider = $this->getProvider($provider) )
             return $ServiceProvider->register();

@@ -4,8 +4,9 @@ $router->get('/', ["Home", "index"]);
 
 $router->get('/kesty/{name}/{id}', ["User", "single"]);
 
-$router->get('/user/{id}', function ($id) {
-    return $id;
+$router->get('/users', function () {
+	echo '<pre>';
+    return var_dump(\app\Model\User::all());
 });
 
 $router->get('/user/{id}/{name}', function ($id, $name) {

@@ -55,7 +55,7 @@ class DefaultServices extends ServiceProvider
          */
         $this->app['dispatcher'] = $this->app->share(function()
         {
-            return new Dispatcher($this->app->getContainer());
+            return new Dispatcher();
         });
 
         /**

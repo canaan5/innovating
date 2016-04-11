@@ -10,6 +10,7 @@ namespace Innovating\ServiceProviders;
 
 
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Events\Dispatcher;
 use Innovating\ServiceProvider;
 
 class DatabaseServiceprovider extends ServiceProvider
@@ -35,7 +36,9 @@ class DatabaseServiceprovider extends ServiceProvider
             'prefix'    => '',
         ]);
 
-        $manager->setEventDispatcher($this->app['dispatcher']($this));
+        $manager->setEventDispatcher(new Dispatcher());
+        $manager->setAsGlobal();
+        $manager->bootEloquent();
         
     }
 }
