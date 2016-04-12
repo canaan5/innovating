@@ -34,8 +34,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     protected $basePath;
 
 
-    protected $routes;
-
     /**
      * Application constructor.
      * @param array $basePath Application base directory
@@ -43,7 +41,6 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function __construct($basePath = null)
     {
-        Debug::enable();
         static::setInstance($this);
         $this->instance('app', $this);
 
@@ -137,16 +134,40 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      */
     public function registerDefaultServices()
     {
+        /**
+         * Add app Path and base Path to the container
+         */
         $this['basePath'] = $this->basePath();
         $this['appPath'] = $this->appPath();
 
         $this->register(new DefaultServices($this));
+
+        // Enable debug based on user configuration
+        if (TRUE === $this->app->config->get('app')['debug'])
+            Debug::enable();
+
+        /**
+         * retister View Provider
+         */
         $this->register(new ViewServiceProvider($this));
+
+        /**
+         * Register Route Provider
+         */
         $this->register(new RouteServiceProvider($this));
+
+        /**
+         * Register Database Provider
+         */
         $this->register(new DatabaseServiceprovider($this));
     }
 
-    
+    /**
+     * Register method for registering service providers
+     *
+     * @param ServiceProvider $provider
+     * @return ServiceProvider|void
+     */
     public function register(ServiceProvider $provider)
     {
         if ( $ServiceProvider = $this->getProvider($provider) )
@@ -157,6 +178,12 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         return $provider;
     }
 
+    /**
+     * Get a service provider
+     *
+     * @param ServiceProvider $provider
+     * @return ServiceProvider
+     */
     public function getProvider(ServiceProvider $provider)
     {
         return $provider;

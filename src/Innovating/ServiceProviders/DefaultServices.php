@@ -10,6 +10,7 @@ namespace Innovating\ServiceProviders;
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
+use Innovating\Configuration;
 use Innovating\DIC\Container;
 use Innovating\ServiceProvider;
 use Innovating\Http\Request;
@@ -66,6 +67,22 @@ class DefaultServices extends ServiceProvider
         $this->app['filesystem'] = $this->app->share(function()
         {
             return new Filesystem();
+        });
+
+        /**
+         * Bind Config to the container
+         */
+        $this->app['config'] = $this->app->share(function() {
+
+            $configFiles = scandir($this->app->basePath().'/config');
+
+            $files = [];
+            foreach( $configFiles as $file )
+            {
+                if ( str_contains($file, '.php'))
+                    $files[str_replace('.php', '', $file)] = require $this->app->basePath()."/config/$file";
+            }
+            return new Configuration($files);
         });
 
     }

@@ -24,21 +24,9 @@ class DatabaseServiceprovider extends ServiceProvider
     public function register()
     {
         $manager = new Manager();
-
-        $manager->addConnection([
-            'driver'    => 'mysql',
-            'host'      => 'localhost',
-            'database'  => 'test',
-            'username'  => 'kesty',
-            'password'  => 'CanaaN55*',
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ]);
-
+        $manager->addConnection($this->app->config->get('database')['default']);
         $manager->setEventDispatcher(new Dispatcher());
         $manager->setAsGlobal();
         $manager->bootEloquent();
-        
     }
 }

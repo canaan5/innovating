@@ -6,6 +6,11 @@
  * Time: 1:55 PM
  */
 
+/**
+ * Set the application configuration here
+ */
+
+// Enable / Disable Debugging
 return [
-    'debug' => TRUE
+    'debug' => true
 ];

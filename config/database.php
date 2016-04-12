@@ -6,6 +6,12 @@
  * Time: 9:29 PM
  */
 
+/**
+ * Register database configuration
+ */
+
+
+// Register default connection
 return [
     'default' => [
         'driver'    => 'mysql',

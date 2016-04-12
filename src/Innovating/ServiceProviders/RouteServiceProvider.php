@@ -35,7 +35,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $router = $this->app->router;
 
-        require '/'.$this->app->basePath() .'/config/routes.php';
+        require '/'.$this->app->appPath() .'/routes.php';
 
     }
 }
