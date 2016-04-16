@@ -3,11 +3,10 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 3/27/16
- * Time: 5:38 AM
+ * Time: 5:38 AM.
  */
 
 namespace Innovating\ServiceProviders;
-
 
 use Illuminate\Events\Dispatcher;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -20,7 +19,6 @@ use Innovating\ServiceProvider;
 
 class ViewServiceProvider extends ServiceProvider
 {
-
     /**
      * Registers services on the given container.
      *
@@ -31,35 +29,33 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        /**
+        /*
          * application default view
          *
          * @param $c container
          * @return Factory view Factory
          */
-        $this->app['view'] = function($c) {
+        $this->app['view'] = function ($c) {
 
             $viewResolver = new EngineResolver();
 
-            $compiler = new BladeCompiler($c['filesystem'], $this->app->basePath() . '/storage/view');
+            $compiler = new BladeCompiler($c['filesystem'], $this->app->basePath().'/storage/view');
 
             $filesystem = $c['filesystem'];
 
-            $viewResolver->register('blade', function() use( $compiler, $filesystem)
-            {
+            $viewResolver->register('blade', function () use ($compiler, $filesystem) {
                 return new CompilerEngine($compiler, $filesystem);
             });
 
-            $viewResolver->register('php', function() {
+            $viewResolver->register('php', function () {
                 return new PhpEngine();
             });
 
-            $viewFinder = new FileViewFinder($filesystem, [$this->app->path . '/View']);
+            $viewFinder = new FileViewFinder($filesystem, [$this->app->path.'/View']);
             $viewFactory = new Factory($viewResolver, $viewFinder, new Dispatcher());
 
             return $viewFactory;
 
         };
-
     }
 }

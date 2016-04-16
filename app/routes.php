@@ -1,7 +1,6 @@
 <?php
 
 /**
- * welcome Page Route
+ * welcome Page Route.
  */
-$router->get('/', ["Home", "index"]);
-
+$router->get('/', ['Home', 'index']);

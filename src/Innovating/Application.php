@@ -3,13 +3,13 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 3/26/16
- * Time: 7:56 PM
+ * Time: 7:56 PM.
  */
 
 namespace Innovating;
 
 use Illuminate\Http\Response;
-use Innovating\Contracts\ApplicationContract;
+use Innovating\Contracts\ApplicationInterface;
 use Innovating\DIC\Container;
 use Innovating\ServiceProviders\DatabaseServiceprovider;
 use Innovating\ServiceProviders\DefaultServices;
@@ -19,37 +19,38 @@ use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-class Application extends Container implements ApplicationContract, HttpKernelInterface
+class Application extends Container implements ApplicationInterface, HttpKernelInterface
 {
     /**
-     * APPLICATION VERSION
+     * APPLICATION VERSION.
      */
     const VERSION = '1.0.0';
 
     /**
-     * Base Directory of the applciation
+     * Base Directory of the applciation.
      *
      * @var string
      */
     protected $basePath;
 
-
     /**
      * Application constructor.
+     *
      * @param array $basePath Application base directory
-     * @param array $values array of values to bind to container
+     * @param array $values   array of values to bind to container
      */
     public function __construct($basePath = null)
     {
         static::setInstance($this);
         $this->instance('app', $this);
 
-        if ( ! is_null($basePath))
+        if (!is_null($basePath)) {
             $this->setBasePath($basePath);
+        }
     }
 
     /**
-     * Get the current version of the application
+     * Get the current version of the application.
      *
      * @return string
      */
@@ -68,7 +69,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get the base path
+     * Get the base path.
      *
      * @return string
      */
@@ -78,15 +79,15 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get the app path
+     * Get the app path.
      */
     public function appPath()
     {
-        return ltrim($this->basePath() . "/app", '/');
+        return ltrim($this->basePath().'/app', '/');
     }
 
     /**
-     * Get the current Environment
+     * Get the current Environment.
      *
      * @return string
      */
@@ -96,9 +97,7 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Boot up the application
-     *
-     * @return void
+     * Boot up the application.
      */
     public function start()
     {
@@ -114,9 +113,9 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
      * and do its best to convert them to a Response instance.
      *
      * @param Request $request A Request instance
-     * @param int $type The type of the request
+     * @param int     $type    The type of the request
      *                         (one of HttpKernelInterface::MASTER_REQUEST or HttpKernelInterface::SUB_REQUEST)
-     * @param bool $catch Whether to catch exceptions or not
+     * @param bool    $catch   Whether to catch exceptions or not
      *
      * @return Response A Response instance
      *
@@ -130,11 +129,11 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Register Default Services of the application
+     * Register Default Services of the application.
      */
     public function registerDefaultServices()
     {
-        /**
+        /*
          * Add app Path and base Path to the container
          */
         $this['basePath'] = $this->basePath();
@@ -143,35 +142,38 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
         $this->register(new DefaultServices($this));
 
         // Enable debug based on user configuration
-        if (TRUE === $this->app->config->get('app')['debug'])
+        if (true === $this->app->config->get('app')['debug']) {
             Debug::enable();
+        }
 
-        /**
+        /*
          * retister View Provider
          */
         $this->register(new ViewServiceProvider($this));
 
-        /**
+        /*
          * Register Route Provider
          */
         $this->register(new RouteServiceProvider($this));
 
-        /**
+        /*
          * Register Database Provider
          */
         $this->register(new DatabaseServiceprovider($this));
     }
 
     /**
-     * Register method for registering service providers
+     * Register method for registering service providers.
      *
      * @param ServiceProvider $provider
+     *
      * @return ServiceProvider|void
      */
     public function register(ServiceProvider $provider)
     {
-        if ( $ServiceProvider = $this->getProvider($provider) )
+        if ($ServiceProvider = $this->getProvider($provider)) {
             return $ServiceProvider->register();
+        }
 
         $provider->register();
 
@@ -179,14 +181,14 @@ class Application extends Container implements ApplicationContract, HttpKernelIn
     }
 
     /**
-     * Get a service provider
+     * Get a service provider.
      *
      * @param ServiceProvider $provider
+     *
      * @return ServiceProvider
      */
     public function getProvider(ServiceProvider $provider)
     {
         return $provider;
     }
-
 }

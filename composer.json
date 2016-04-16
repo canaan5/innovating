@@ -26,5 +26,10 @@
             "Innovating\\": "src/Innovating",
             "app\\": "app"
         }
+    },
+    "autoload-dev": {
+        "classmap": [
+            "Tests/TestCase.php"
+        ]
     }
 }

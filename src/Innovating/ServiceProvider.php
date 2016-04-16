@@ -37,8 +37,7 @@ abstract class ServiceProvider
     /**
      * Create a new service provider instance.
      *
-     * @param  \Illuminate\Contracts\Foundation\Application  $app
-     * @return void
+     * @param \Illuminate\Contracts\Foundation\Application $app
      */
     public function __construct($app)
     {
@@ -47,17 +46,14 @@ abstract class ServiceProvider
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     abstract public function register();
 
     /**
      * Merge the given configuration with the existing configuration.
      *
-     * @param  string  $path
-     * @param  string  $key
-     * @return void
+     * @param string $path
+     * @param string $key
      */
     protected function mergeConfigFrom($path, $key)
     {
@@ -69,9 +65,8 @@ abstract class ServiceProvider
     /**
      * Register a view file namespace.
      *
-     * @param  string  $path
-     * @param  string  $namespace
-     * @return void
+     * @param string $path
+     * @param string $namespace
      */
     protected function loadViewsFrom($path, $namespace)
     {
@@ -85,9 +80,8 @@ abstract class ServiceProvider
     /**
      * Register a translation file namespace.
      *
-     * @param  string  $path
-     * @param  string  $namespace
-     * @return void
+     * @param string $path
+     * @param string $namespace
      */
     protected function loadTranslationsFrom($path, $namespace)
     {
@@ -97,22 +91,21 @@ abstract class ServiceProvider
     /**
      * Register paths to be published by the publish command.
      *
-     * @param  array  $paths
-     * @param  string  $group
-     * @return void
+     * @param array  $paths
+     * @param string $group
      */
     protected function publishes(array $paths, $group = null)
     {
         $class = get_class($this);
 
-        if (! array_key_exists($class, static::$publishes)) {
+        if (!array_key_exists($class, static::$publishes)) {
             static::$publishes[$class] = [];
         }
 
         static::$publishes[$class] = array_merge(static::$publishes[$class], $paths);
 
         if ($group) {
-            if (! array_key_exists($group, static::$publishGroups)) {
+            if (!array_key_exists($group, static::$publishGroups)) {
                 static::$publishGroups[$group] = [];
             }
 
@@ -123,8 +116,9 @@ abstract class ServiceProvider
     /**
      * Get the paths to publish.
      *
-     * @param  string  $provider
-     * @param  string  $group
+     * @param string $provider
+     * @param string $group
+     *
      * @return array
      */
     public static function pathsToPublish($provider = null, $group = null)
@@ -161,8 +155,7 @@ abstract class ServiceProvider
     /**
      * Register the package's custom Artisan commands.
      *
-     * @param  array|mixed  $commands
-     * @return void
+     * @param array|mixed $commands
      */
     public function commands($commands)
     {
@@ -221,8 +214,9 @@ abstract class ServiceProvider
     /**
      * Dynamically handle missing method calls.
      *
-     * @param  string  $method
-     * @param  array  $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

@@ -2,3 +2,5 @@ phpunit.xml
 composer.lock
 vendor
 codeception.yml
+node_modules
+Guardfile

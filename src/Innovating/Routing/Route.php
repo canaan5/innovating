@@ -3,7 +3,7 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 3/29/16
- * Time: 12:20 AM
+ * Time: 12:20 AM.
  */
 
 namespace Innovating\Routing;
@@ -13,7 +13,7 @@ use Innovating\Routing\Contracts\RouteContract;
 class Route implements RouteContract
 {
     /**
-     * Path
+     * Path.
      *
      * @var string
      */
@@ -27,19 +27,18 @@ class Route implements RouteContract
     protected $methods = [];
 
     /**
-     * Route Action
+     * Route Action.
      *
-     * @var \Closure|String
+     * @var \Closure|string
      */
     protected $action;
 
     /**
-     * Route parameters
+     * Route parameters.
      *
      * @var array
      */
     protected $parameters = [];
-
 
     public function __construct(array $methods, $uri, $action)
     {
@@ -49,7 +48,7 @@ class Route implements RouteContract
     }
 
     /**
-     * get request path passed to Route
+     * get request path passed to Route.
      *
      * @return string
      */
@@ -59,27 +58,25 @@ class Route implements RouteContract
     }
 
     /**
-     * get Request methods
+     * get Request methods.
      *
      * @return array request methods
      */
     public function getMethods()
     {
-        if ( sizeof($this->methods) > 1 )
-        {
-            foreach ($this->methods as $method)
+        if (sizeof($this->methods) > 1) {
+            foreach ($this->methods as $method) {
                 return $method;
-        }
-
-        else {
+            }
+        } else {
             return $this->methods;
         }
     }
 
     /**
-     * Get the route action
+     * Get the route action.
      *
-     * @return \Closure|Callable|string
+     * @return \Closure|callable|string
      */
     public function getAction()
     {
@@ -87,17 +84,17 @@ class Route implements RouteContract
     }
 
     /**
-     * set the route paramaters
+     * set the route paramaters.
      *
      * @param $value array
      */
-    public function setParameters($value) {
-
+    public function setParameters($value)
+    {
         $this->parameters = $value;
     }
 
     /**
-     * get the current route parameters
+     * get the current route parameters.
      *
      * @return array
      */

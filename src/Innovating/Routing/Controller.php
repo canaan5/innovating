@@ -3,18 +3,17 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 4/6/16
- * Time: 3:32 PM
+ * Time: 3:32 PM.
  */
 
 namespace Innovating\Routing;
 
-
 use Innovating\DIC\Container;
 
-Abstract class Controller
+abstract class Controller
 {
     /**
-     * container instance
+     * container instance.
      *
      * @var object
      */
@@ -29,16 +28,15 @@ Abstract class Controller
     }
 
     /**
-     * load a view with or without data to the consumer
+     * load a view with or without data to the consumer.
      *
      * @param $view
      * @param array $data
+     *
      * @return mixed
      */
     public function view($view, array $data = [])
     {
         return $this->container->view->make($view, $data);
-
     }
-
 }

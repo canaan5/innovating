@@ -3,22 +3,21 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 3/28/16
- * Time: 11:50 PM
+ * Time: 11:50 PM.
  */
 
 namespace Innovating\Routing;
 
-
-use \Closure;
+use Closure;
 use Innovating\DIC\Contracts\Container;
 use Innovating\Http\Request;
-use Innovating\Routing\Contracts;
 use Innovating\Routing\Contracts\RouterContract;
 
 class Router implements RouterContract
 {
     /**
-     * Container instance
+     * Container instance.
+     *
      * @var Container
      */
     protected $container;
@@ -32,11 +31,11 @@ class Router implements RouterContract
     public function __construct(Container $container)
     {
         $this->container = $container;
-        $this->routes = new RouteCollection($container->request);
+        $this->routes = new RouteCollection($container);
     }
 
     /**
-     * get path to app Controller directory
+     * get path to app Controller directory.
      *
      * @return string
      */
@@ -48,9 +47,8 @@ class Router implements RouterContract
     /**
      * Map a GET Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function get($path, $action)
     {
@@ -60,9 +58,8 @@ class Router implements RouterContract
     /**
      * Map a POST Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function post($path, $action)
     {
@@ -72,9 +69,8 @@ class Router implements RouterContract
     /**
      * Map a PUT Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function put($path, $action)
     {
@@ -84,9 +80,8 @@ class Router implements RouterContract
     /**
      * Map a DELETE Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function delete($path, $action)
     {
@@ -96,9 +91,8 @@ class Router implements RouterContract
     /**
      * Map a PATCH Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function patch($path, $action)
     {
@@ -108,9 +102,8 @@ class Router implements RouterContract
     /**
      * Map a OPTIONS Route to the Router.
      *
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function options($path, $action)
     {
@@ -120,10 +113,9 @@ class Router implements RouterContract
     /**
      * Map a MATCH Route to the Router.
      *
-     * @param String|Array $method
-     * @param String $path
-     * @param String|Array|Closure $action
-     * @return void
+     * @param string|array         $method
+     * @param string               $path
+     * @param string|array|Closure $action
      */
     public function match($method, $path, $action)
     {
@@ -133,9 +125,8 @@ class Router implements RouterContract
     /**
      * Create a route group with shared attributes.
      *
-     * @param  array $attributes
-     * @param  \Closure $callback
-     * @return void
+     * @param array    $attributes
+     * @param \Closure $callback
      */
     public function group(array $attributes, \Closure $callback)
     {
@@ -146,7 +137,7 @@ class Router implements RouterContract
     }
 
     /**
-     * add route the our route stack
+     * add route the our route stack.
      *
      * @param $method array
      * @param $path string
@@ -156,18 +147,18 @@ class Router implements RouterContract
     {
         // check if its a group route and it has prefix,
         // if it have prefix, add the prefix to the path
-        if ( isset( $this->attributes['prefix']) )
-            $path = $this->attributes['prefix'] . '/' . $path;
+        if (isset($this->attributes['prefix'])) {
+            $path = $this->attributes['prefix'].'/'.$path;
+        }
 
         // if routing to a controller, add the namespace.
-        if ( is_array($action))
+        if (is_array($action)) {
             $action[0] = isset($this->attributes['namespace']) ? $this->attributes['namespace'].'\\'.$action[0] : $action[0];
-
+        }
 
         $path = $path == '/' ? '/' : rtrim($path, '/');
 
         $this->routes->add(new Route($method, $path, $action));
-
     }
 
     public function dispatch(Request $request)
@@ -180,23 +171,21 @@ class Router implements RouterContract
         $action = $route->getAction();
 
         // if the route action is a closure, return the result to the consumer
-        if ( $action instanceof Closure )
+        if ($action instanceof Closure) {
             return call_user_func_array($action, $route->getParameters());
-
+        }
 
         // is action is an array and the length of the array i 2,
         // then we have a controller and a method, return the controller, method and any parameters to the consumer
-        if ( is_array($action) && sizeof($action) === 2 )
-        {
+        if (is_array($action) && sizeof($action) === 2) {
             $this->container->instance('Innovating\Routing\Controller', $route);
 
             return call_user_func_array([
                 $this->container->make($this->controllerPath().$action[0]),
-                $action[1]],
+                $action[1], ],
                 $route->getParameters());
         }
 
         return $route;
     }
-
 }
