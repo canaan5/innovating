@@ -4,3 +4,5 @@ vendor
 codeception.yml
 node_modules
 Guardfile
+.idea
+.gitignore
