@@ -11,11 +11,13 @@ namespace Innovating;
 use Illuminate\Http\Response;
 use Innovating\Contracts\ApplicationInterface;
 use Innovating\DIC\Container;
+use Innovating\Exceptions\ErrorHandlerService;
 use Innovating\ServiceProviders\DatabaseServiceprovider;
 use Innovating\ServiceProviders\DefaultServices;
 use Innovating\ServiceProviders\RouteServiceProvider;
 use Innovating\ServiceProviders\ViewServiceProvider;
 use Symfony\Component\Debug\Debug;
+use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -134,22 +136,29 @@ class Application extends Container implements ApplicationInterface, HttpKernelI
     public function registerDefaultServices()
     {
         /*
-         * Add app Path and base Path to the container
+         * Add Paths to  container
          */
         $this['basePath'] = $this->basePath();
+        $this['storagePath'] = $this->basePath().'/storage';
         $this['appPath'] = $this->appPath();
 
         $this->register(new DefaultServices($this));
 
+        $this->register(new ErrorHandlerService($this));
+
         // Enable debug based on user configuration
         if (true === $this->app->config->get('app')['debug']) {
             Debug::enable();
+            $error = ErrorHandler::register();
+            $e = new \Exception();
+
+            var_dump($error->screamAt(100));
         }
 
         /*
          * retister View Provider
          */
-        $this->register(new ViewServiceProvider($this));
+        $this->register(new ViewServiceProvider());
 
         /*
          * Register Route Provider

@@ -8,19 +8,13 @@
 
 namespace Innovating\ServiceProviders;
 
-use Innovating\DIC\Container;
 use Innovating\Routing\Router;
 use Innovating\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * Registers services on the given container.
-     *
-     * This method should only be used to configure services and parameters.
-     * It should not get services.
-     *
-     * @param Container $pimple A container instance
+     * Register a service provider.
      */
     public function register()
     {

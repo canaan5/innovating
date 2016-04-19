@@ -45,7 +45,7 @@ abstract class ServiceProvider
     }
 
     /**
-     * Register the service provider.
+     * Register a service provider.
      */
     abstract public function register();
 

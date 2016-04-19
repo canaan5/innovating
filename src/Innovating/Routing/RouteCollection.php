@@ -19,16 +19,16 @@ use Symfony\Component\Routing\Route as SyfonyRoute;
 class RouteCollection implements RouteCollectionContract
 {
     /**
-     * Container Instance
+     * Container Instance.
      *
-     * @var Container $container
+     * @var Container
      */
     protected $container;
 
     /**
      * Request instance from the container.
      *
-     * @var Request $request
+     * @var Request
      */
     protected $request;
 
@@ -111,7 +111,7 @@ class RouteCollection implements RouteCollectionContract
         // decoded request path
         $decodedPath = $this->request->createFromGlobals()->decodedPath();
 
-        if (preg_match($this->compiled->getRegex(), '/'. $decodedPath, $matches)) {
+        if (preg_match($this->compiled->getRegex(), '/'.$decodedPath, $matches)) {
 
             /*
              * extract the parameters and set them to the current route parameters

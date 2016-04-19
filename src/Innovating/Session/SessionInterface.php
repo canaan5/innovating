@@ -3,7 +3,7 @@
  * Created by Canan Etaigbenu
  * User: canaan5
  * Date: 4/16/16
- * Time: 4:30 AM
+ * Time: 4:30 AM.
  */
 
 namespace Innovating\Session;
@@ -12,5 +12,4 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface as SymfonySessionI
 
 interface SessionInterface extends SymfonySessionInterface
 {
-
 }

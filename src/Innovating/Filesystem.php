@@ -219,7 +219,7 @@ class Filesystem
     public function prepend($file, $data)
     {
         if ($this->exists($file)) {
-            return $this->put($file, $data . $this->get($file));
+            return $this->put($file, $data.$this->get($file));
         }
 
         return $this->put($file, $data);

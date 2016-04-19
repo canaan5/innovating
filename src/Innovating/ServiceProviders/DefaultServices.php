@@ -51,8 +51,11 @@ class DefaultServices extends ServiceProvider
          *
          * @return \Illuminate\Events\Dispatcher
          */
-        $this->app['dispatcher'] = $this->app->share(function () {
-            return new Dispatcher();
+        $this->app->singleton('events', function ($app) {
+//            return new Dispatcher();
+            return (new Dispatcher())->setQueueResolver(function () use ($app) {
+                return $app->make('Illuminate\Contracts\Queue\Factory');
+            });
         });
 
         /*
