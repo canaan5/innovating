@@ -100,6 +100,8 @@ class Group implements RouterContract
     public function parseNamespace($action)
     {
         list($class, $method) = $action;
+
+        // Add the namespace if its set
         $namespace = $this->attributes['namespace']."\\$class" ?: $class;
         $action[0] = $namespace;
 
