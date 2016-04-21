@@ -9,6 +9,7 @@
 namespace Innovating\Routing\Contracts;
 
 use Innovating\Http\Request;
+use Psr\Http\Message\RequestInterface;
 
 interface RouteCollectionContract
 {
@@ -26,5 +27,5 @@ interface RouteCollectionContract
      *
      * @return mixed
      */
-    public function match(Request $request);
+    public function match(RequestInterface $request);
 }

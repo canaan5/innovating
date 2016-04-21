@@ -3,8 +3,9 @@
 namespace Innovating\DIC\Contracts;
 
 use Closure;
+use Interop\Container\ContainerInterface;
 
-interface Container
+interface Container extends ContainerInterface
 {
     /**
      * Determine if the given abstract type has been bound.

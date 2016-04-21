@@ -8,7 +8,7 @@
 
 namespace app\Controllers;
 
-use Innovating\Routing\Controller;
+use app\Model\User;
 
 class Home extends Controller
 {
@@ -18,5 +18,10 @@ class Home extends Controller
     public function index()
     {
         return $this->view('home');
+    }
+
+    function user($id)
+    {
+        return User::find($id);
     }
 }

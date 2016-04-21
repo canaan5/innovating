@@ -19,6 +19,14 @@ interface RouterContract
     public function get($path, $action);
 
     /**
+     * Map a HEAD Route to the Router.
+     *
+     * @param string                $path
+     * @param string|array|\Closure $action
+     */
+    public function head($path, $action);
+
+    /**
      * Map a POST Route to the Router.
      *
      * @param string               $path

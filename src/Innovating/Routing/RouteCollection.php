@@ -13,6 +13,7 @@ use Innovating\Http\Request;
 use Innovating\Routing\Contracts\RouteCollectionContract;
 use Innovating\Routing\Contracts\RouteContract;
 use Innovating\Routing\Exceptions\RouteNotFoundException;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Routing\CompiledRoute;
 use Symfony\Component\Routing\Route as SyfonyRoute;
 
@@ -156,7 +157,7 @@ class RouteCollection implements RouteCollectionContract
      *
      * @return mixed
      */
-    public function match(Request $request)
+    public function match(RequestInterface $request)
     {
         $rMethod = $request->getMethod();
         $requestPath = $request->path() == '/' ? '/' : '/'.$request->decodedPath();
@@ -164,6 +165,7 @@ class RouteCollection implements RouteCollectionContract
         /*
          * check if any defined route matches the request path, if theres none, throw and exception
          */
+
         if (empty($this->currentRoute)) {
             throw new RouteNotFoundException(sprintf('the Route [%s] has not been defined', $requestPath));
         }
@@ -171,7 +173,6 @@ class RouteCollection implements RouteCollectionContract
         /*
          * return the matched route for the dispatcher to consume
          */
-
         return $this->currentRoute[$rMethod][$requestPath];
     }
 }

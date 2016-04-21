@@ -4,6 +4,8 @@ namespace Innovating\DIC;
 
 use Closure;
 use ArrayAccess;
+use Interop\Container\Exception\ContainerException;
+use Interop\Container\Exception\NotFoundException;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionFunction;
@@ -1158,7 +1160,7 @@ class Container implements ArrayAccess, ContainerContract
      */
     public function offsetExists($key)
     {
-        return isset($this->bindings[$key]);
+        return $this->has($key);
     }
 
     /**
@@ -1170,7 +1172,7 @@ class Container implements ArrayAccess, ContainerContract
      */
     public function offsetGet($key)
     {
-        return $this->make($key);
+        return $this->get($key);
     }
 
     /**
@@ -1224,5 +1226,33 @@ class Container implements ArrayAccess, ContainerContract
     public function __set($key, $value)
     {
         $this[$key] = $value;
+    }
+
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @throws NotFoundException  No entry was found for this identifier.
+     * @throws ContainerException Error while retrieving the entry.
+     *
+     * @return mixed Entry.
+     */
+    public function get($id)
+    {
+        return $this->make($id);
+    }
+
+    /**
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @return bool
+     */
+    public function has($id)
+    {
+        return isset($this->bindings[$id]);
     }
 }

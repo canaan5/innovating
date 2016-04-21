@@ -40,7 +40,7 @@ class Route implements RouteContract
      */
     protected $parameters = [];
 
-    public function __construct(array $methods, $uri, $action)
+    public function __construct($methods, $uri, $action)
     {
         $this->uri = $uri;
         $this->methods = $methods;

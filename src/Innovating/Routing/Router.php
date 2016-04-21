@@ -10,11 +10,14 @@ namespace Innovating\Routing;
 
 use Closure;
 use Innovating\DIC\Contracts\Container;
-use Innovating\Http\Request;
 use Innovating\Routing\Contracts\RouterContract;
+use Interop\Container\ContainerInterface;
+use Psr\Http\Message\RequestInterface;
 
 class Router implements RouterContract
 {
+    use RouteStoreTrait;
+    use RouteVerbTrait;
     /**
      * Container instance.
      *
@@ -22,13 +25,13 @@ class Router implements RouterContract
      */
     protected $container;
 
-    protected $attributes = [];
+    protected $groupStack = [];
 
     protected $routes;
 
     protected $path;
 
-    public function __construct(Container $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->routes = new RouteCollection($container);
@@ -39,101 +42,9 @@ class Router implements RouterContract
      *
      * @return string
      */
-    public function controllerPath()
+    public function controllerNamespace()
     {
         return '\\app\\Controllers\\';
-    }
-
-    /**
-     * Map a GET Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function get($path, $action)
-    {
-        $this->addToRoute(['GET', 'HEAD'], $path, $action);
-    }
-
-    /**
-     * Map a POST Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function post($path, $action)
-    {
-        $this->addToRoute('POST', $path, $action);
-    }
-
-    /**
-     * Map a PUT Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function put($path, $action)
-    {
-        $this->addToRoute('PUT', $path, $action);
-    }
-
-    /**
-     * Map a DELETE Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function delete($path, $action)
-    {
-        $this->addToRoute('DELETE', $path, $action);
-    }
-
-    /**
-     * Map a PATCH Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function patch($path, $action)
-    {
-        $this->addToRoute('PATCH', $path, $action);
-    }
-
-    /**
-     * Map a OPTIONS Route to the Router.
-     *
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function options($path, $action)
-    {
-        $this->addToRoute('OPTIONS', $path, $action);
-    }
-
-    /**
-     * Map a MATCH Route to the Router.
-     *
-     * @param string|array         $method
-     * @param string               $path
-     * @param string|array|Closure $action
-     */
-    public function match($method, $path, $action)
-    {
-        $this->addToRoute(['GET', 'POST', 'DELETE', 'PUT', 'PATCH', 'HEAD'], $path, $action);
-    }
-
-    /**
-     * Create a route group with shared attributes.
-     *
-     * @param array    $attributes
-     * @param \Closure $callback
-     */
-    public function group(array $attributes, \Closure $callback)
-    {
-        // save the attributes and execute the closure
-        $this->attributes = $attributes;
-
-        call_user_func($callback, $this);
     }
 
     /**
@@ -147,13 +58,13 @@ class Router implements RouterContract
     {
         // check if its a group route and it has prefix,
         // if it have prefix, add the prefix to the path
-        if (isset($this->attributes['prefix'])) {
-            $path = $this->attributes['prefix'].'/'.$path;
-        }
+//        if (isset($this->groupStack[0]['prefix'])) {
+//            $path = $this->groupStack[0]['prefix'].'/'.$path;
+//        }
 
         // if routing to a controller, add the namespace.
         if (is_array($action)) {
-            $action[0] = isset($this->attributes['namespace']) ? $this->attributes['namespace'].'\\'.$action[0] : $action[0];
+            $action[0] = isset($this->groupStack['namespace']) ? $this->groupStack['namespace'].'\\'.$action[0] : $action[0];
         }
 
         $path = $path == '/' ? '/' : rtrim($path, '/');
@@ -161,7 +72,7 @@ class Router implements RouterContract
         $this->routes->add(new Route($method, $path, $action));
     }
 
-    public function dispatch(Request $request)
+    public function dispatch(RequestInterface $request)
     {
         // Match the request Uri against the defined routes
         $route = $this->routes->match($request);
@@ -181,7 +92,7 @@ class Router implements RouterContract
             $this->container->instance('Innovating\Routing\Controller', $route);
 
             return call_user_func_array([
-                $this->container->make($this->controllerPath().$action[0]),
+                $this->container->make($this->controllerNamespace().$action[0]),
                 $action[1], ],
                 $route->getParameters());
         }

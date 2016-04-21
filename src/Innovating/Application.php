@@ -17,7 +17,6 @@ use Innovating\ServiceProviders\DefaultServices;
 use Innovating\ServiceProviders\RouteServiceProvider;
 use Innovating\ServiceProviders\ViewServiceProvider;
 use Symfony\Component\Debug\Debug;
-use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -149,16 +148,12 @@ class Application extends Container implements ApplicationInterface, HttpKernelI
         // Enable debug based on user configuration
         if (true === $this->app->config->get('app')['debug']) {
             Debug::enable();
-            $error = ErrorHandler::register();
-            $e = new \Exception();
-
-            var_dump($error->screamAt(100));
         }
 
         /*
          * retister View Provider
          */
-        $this->register(new ViewServiceProvider());
+        $this->register(new ViewServiceProvider($this));
 
         /*
          * Register Route Provider

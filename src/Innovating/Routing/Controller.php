@@ -10,7 +10,7 @@ namespace Innovating\Routing;
 
 use Innovating\DIC\Container;
 
-abstract class Controller
+trait Controller
 {
     /**
      * container instance.
